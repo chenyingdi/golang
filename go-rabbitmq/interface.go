@@ -20,7 +20,7 @@ func NewMode() Modes {
 	return &Mode{}
 }
 
-func (m *Mode) Publish(msg string) {
+func (m *Mode) Publish(msg []byte) {
 	// 1. declare the exchange
 	err := m.rabbitMQ.channel.ExchangeDeclare(
 		m.rabbitMQ.Exchange,
@@ -39,7 +39,7 @@ func (m *Mode) Publish(msg string) {
 		m.rabbitMQ.Key,
 		false,
 		false,
-		amqp.Publishing{ContentType: "text/plain", Body: []byte(msg)},
+		amqp.Publishing{ContentType: "text/plain", Body: msg},
 	)
 
 	m.rabbitMQ.failOnError(err, "publish error")
